@@ -6,7 +6,7 @@
   I.app = '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/>';
   const sub = document.createElement('div'); sub.id = 'hSub'; sub.className = 'hsub';
   const logo = document.querySelector('.logo'); const wrap = document.createElement('div'); wrap.className = 'logotx';
-  wrap.appendChild(document.createTextNode('UzakMasa')); wrap.appendChild(sub);
+  wrap.appendChild(document.createTextNode('meminPC')); wrap.appendChild(sub);
   [...logo.childNodes].forEach(n => { if (n.nodeType === 3) n.remove(); }); logo.appendChild(wrap);
 })();
 function ring(label, val, txt){
