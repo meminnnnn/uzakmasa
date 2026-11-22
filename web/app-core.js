@@ -110,13 +110,18 @@ function wakeBtn(id){
   if (t && Date.now() - t < 25*60000) return `<button class="pri wide" disabled>${ic('power')}Uyanıyor… (en fazla 20 dk)</button>`;
   return `<button class="pri wide" data-a="wake">${ic('power')}Uyandır</button>`;
 }
+async function defaultWake(){
+  const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('wake|' + S.key));
+  return 'umw-' + Array.from(new Uint8Array(h), x => x.toString(16).padStart(2, '0')).join('').slice(0, 24);
+}
 async function wakeDevice(id){
-  if (!S.wake){ toast('Önce Ayarlar\'dan uyandırma konusunu gir', 4000); $('setDb').value = S.db || ''; $('setWake').value = ''; showM('mSet'); return; }
   try{
-    const r = await fetch('https://ntfy.sh/' + encodeURIComponent(S.wake), {method:'POST', body:'ac'});
+    const def = await defaultWake();
+    const r = await fetch('https://ntfy.sh/' + encodeURIComponent(def), {method:'POST', body:'ac'});
     if (!r.ok) throw new Error(r.status);
+    if (S.wake && S.wake !== def) fetch('https://ntfy.sh/' + encodeURIComponent(S.wake), {method:'POST', body:'ac'}).catch(() => {});
     wakeAt[id] = Date.now(); render();
-    toast('Uyandırma sinyali gitti. Laptop 20 dk içinde açılır.', 5000);
+    toast('Uyandırma sinyali gitti. Bilgisayar 20 dk içinde açılır.', 5000);
   }catch(e){ toast('Sinyal gönderilemedi', 4000); }
 }
 function render(){
@@ -626,7 +631,7 @@ function showAdd(){
 $('addName').addEventListener('input', () => { $('addCmd').textContent = addCommand(); });
 $('bAdd').onclick = showAdd;
 $('bPhone').onclick = () => { $('phoneLink').textContent = `${location.origin}/#db=${encodeURIComponent(S.db)}&key=${S.key}` + (S.wake ? `&wake=${encodeURIComponent(S.wake)}` : ''); showM('mPhone'); };
-$('bSet').onclick = () => { ntfyTopic().then(t => $('setNtfy').textContent = t); $('setWake').value = S.wake || ''; $('setDb').value = S.db || ''; showM('mSet'); };
+$('bSet').onclick = () => { ntfyTopic().then(t => $('setNtfy').textContent = t); defaultWake().then(w => $('setWake').value = S.wake || w); $('setDb').value = S.db || ''; showM('mSet'); };
 function cleanDb(v){ v = v.trim().replace(/\/+$/, ''); return /^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebaseio\.com|firebasedatabase\.app)$/i.test(v) ? v : null; }
 function parseConn(v){
   v = String(v || '').trim();
