@@ -12,7 +12,7 @@
     },{passive:false});
     document.addEventListener('touchmove',function(e){ if(e.touches.length>1 && !(e.target.closest && e.target.closest('#vwrap'))) e.preventDefault(); },{passive:false});
   })();
-  var s=document.createElement('script'); s.src='/app-core.js?v=15'; s.async=false; document.body.appendChild(s);
+  var s=document.createElement('script'); s.src='/app-core.js?v=18'; s.async=false; document.body.appendChild(s);
   var t=document.createElement('script'); t.src='/term-fix.js?v=151'; t.async=false; document.body.appendChild(t);
   var u=document.createElement('script'); u.src='/ui.js?v=17'; u.async=false; document.body.appendChild(u);
 })();
