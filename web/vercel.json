@@ -3,6 +3,7 @@
     { "source": "/(agent|install|send)\\.ps1", "headers": [
       { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
       { "key": "Cache-Control", "value": "no-store" } ] },
-    { "source": "/", "headers": [ { "key": "Cache-Control", "value": "no-cache" } ] }
+    { "source": "/", "headers": [ { "key": "Cache-Control", "value": "no-cache" } ] },
+    { "source": "/app.js", "headers": [ { "key": "Cache-Control", "value": "no-cache" } ] }
   ]
 }
